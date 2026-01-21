@@ -1,5 +1,9 @@
 streamlit 
-groq 
+transformers
+torch 
+diffusers
+accelerate 
+huggingface_hub
 google-auth
 google-auth-oauthlib
 google-api-python-client

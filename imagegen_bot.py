@@ -94,7 +94,7 @@ st.set_page_config("Bodha AI by Skandan", layout="wide")
 st.title("Bodha AI")
 
 client = InferenceClient(
-    "runwayml/stable-diffusion-v1-5",
+    "Tongyi-MAI/Z-Image-Turbo",
     token=st.secrets["HF_TOKEN"]
 )
 

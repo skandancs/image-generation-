@@ -60,7 +60,7 @@ with col1:
             prompt = inputprompt.strip()
 
             # Call HF inference endpoint for SDXL
-            response = client.post(
+            response = client.text_to_image(
                 model="stabilityai/stable-diffusion-xl-base-1.0",
                 inputs=prompt,
                 headers={"Accept": "image/png"}   # ensures raw image output

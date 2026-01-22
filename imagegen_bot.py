@@ -55,11 +55,13 @@ with col1:
 
     if st.button("Generate Content"):
         with st.spinner("Generating image..."):
-            prompt = f"{inputprompt}"
+            prompt = inputprompt
+
             img_bytes = client.post(
                 model="stabilityai/stable-diffusion-xl-base-1.0",
                 inputs=prompt
-            )
+            ).read()
+
             st.session_state.image = Image.open(io.BytesIO(img_bytes))
 
 with col2:

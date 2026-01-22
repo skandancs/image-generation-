@@ -1,4 +1,4 @@
-'''
+
 import streamlit as st
 import torch
 from diffusers import StableDiffusionPipeline
@@ -22,11 +22,14 @@ with col1:
             model="runwayml/stable-diffusion-v1-5",
             messages=[{"role": "user", "content": prompt}]
         )
-        st.session_state.text = response.choices[0].message.content
+        st.session_state.image = response.choices[0].message.content
 
 with col2:
-    if "text" in st.session_state:
-        content = st.text_area("Generated Content", st.session_state.text, height=300)
+    if "image" in st.session_state:
+        st.image(st.session_state.image, width=400)
+
+        img_buffer = io.BytesIO()
+        st.session_state.image.save(img_buffer, format="PNG")
 
         st.download_button(
             label="⬇️ Download Image",
@@ -78,3 +81,4 @@ with col2:
         )
     else:
         st.info("Generate content first")
+'''

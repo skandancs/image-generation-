@@ -37,6 +37,7 @@ with col2:
     else:
         st.info("Generate content first")
 '''
+
 import streamlit as st
 from huggingface_hub import InferenceClient
 from PIL import Image
@@ -45,8 +46,10 @@ import io
 st.set_page_config("Bodha AI by Skandan", layout="wide")
 st.title("Bodha AI")
 
-# HF Token is stored in Streamlit secrets
-client = InferenceClient(api_key=st.secrets["HF_TOKEN"])
+client = InferenceClient(
+    "stabilityai/stable-diffusion-xl-base-1.0",
+    token=st.secrets["HF_TOKEN"]
+)
 
 col1, col2 = st.columns(2)
 
@@ -57,26 +60,13 @@ with col1:
 
     if st.button("Generate Content"):
         with st.spinner("Generating image..."):
-            prompt = inputprompt.strip()
-
-            # Call HF inference endpoint for SDXL
-            response = client.text_to_image(
-                model="stabilityai/stable-diffusion-xl-base-1.0",
-                inputs=prompt,
-                headers={"Accept": "image/png"}   # ensures raw image output
-            )
-
-            # Convert HTTPResponse → bytes
-            img_bytes = response.read()
-
-            # Convert bytes → PIL Image
-            st.session_state.image = Image.open(io.BytesIO(img_bytes))
+            image = client.text_to_image(inputprompt)
+            st.session_state.image = image
 
 with col2:
     if "image" in st.session_state:
         st.image(st.session_state.image, width=400)
 
-        # Prepare for download
         img_buffer = io.BytesIO()
         st.session_state.image.save(img_buffer, format="PNG")
 

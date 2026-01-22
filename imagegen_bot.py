@@ -41,8 +41,11 @@ with col2:
         )
     else:
         st.info("Generate content first")
-'''
 
+
+
+
+'''
 import streamlit as st
 from huggingface_hub import InferenceClient
 from PIL import Image

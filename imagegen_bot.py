@@ -2,8 +2,6 @@ import streamlit as st
 from huggingface_hub import InferenceClient
 from PIL import Image
 import io
-from diffusers import DiffusionPipeline
-import torch
 
 st.set_page_config("Bodha AI by Skandan", layout="wide")
 st.title("Bodha AI")
@@ -12,9 +10,6 @@ client = InferenceClient(
     "Tongyi-MAI/Z-Image-Turbo",
     token=st.secrets["HF_TOKEN"]
 )
-
-pipe = DiffusionPipeline.from_pretrained("stabilityai/stable-diffusion-xl-base-1.0", torch_dtype=torch.float16, use_safetensors=True, variant="fp16")
-pipe.to("cuda")
 
 col1, col2 = st.columns(2)
 
@@ -25,7 +20,7 @@ with col1:
 
     if st.button("Generate Content"):
         with st.spinner("Generating image..."):
-            images = pipe(inputprompt=inputprompt).images[0]
+            image = client.text_to_image(inputprompt)
             st.session_state.image = image
 
 with col2:

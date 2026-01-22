@@ -3,6 +3,8 @@ import streamlit as st
 import torch
 from diffusers import StableDiffusionPipeline
 from PIL import Image
+from huggingface_hub import InferenceClient
+import io
 
 st.set_page_config("Bodha AI by Skandan", layout="wide")
 st.title("Bodha AI")

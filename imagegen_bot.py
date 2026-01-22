@@ -45,7 +45,9 @@ import io
 st.set_page_config("Bodha AI by Skandan", layout="wide")
 st.title("Bodha AI")
 
+# HF Token is stored in Streamlit secrets
 client = InferenceClient(api_key=st.secrets["HF_TOKEN"])
+
 col1, col2 = st.columns(2)
 
 st.image("bodhaai.jpeg", width=150, caption="Bodha AI")
@@ -55,19 +57,26 @@ with col1:
 
     if st.button("Generate Content"):
         with st.spinner("Generating image..."):
-            prompt = inputprompt
+            prompt = inputprompt.strip()
 
-            img_bytes = client.post(
+            # Call HF inference endpoint for SDXL
+            response = client.post(
                 model="stabilityai/stable-diffusion-xl-base-1.0",
-                inputs=prompt
-            ).read()
+                inputs=prompt,
+                headers={"Accept": "image/png"}   # ensures raw image output
+            )
 
+            # Convert HTTPResponse → bytes
+            img_bytes = response.read()
+
+            # Convert bytes → PIL Image
             st.session_state.image = Image.open(io.BytesIO(img_bytes))
 
 with col2:
     if "image" in st.session_state:
         st.image(st.session_state.image, width=400)
 
+        # Prepare for download
         img_buffer = io.BytesIO()
         st.session_state.image.save(img_buffer, format="PNG")
 

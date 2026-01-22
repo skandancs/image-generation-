@@ -7,3 +7,4 @@ huggingface_hub
 google-auth
 google-auth-oauthlib
 google-api-python-client
+pillow
